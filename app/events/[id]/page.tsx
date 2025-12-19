@@ -1,48 +1,98 @@
-import { formatEventDate } from "../../../lib/formatDate";
-import { getEvent } from "../../../lib/events";
-import { formatEventDateWithWeekday } from "../../../lib/formatDateWithWeekday";
+'use client'
 
-export default async function EventPage({ params }: { params: { id: string } }) {
-  const event = await getEvent(params.id);
+import { useEffect, useState } from 'react'
+import { useRouter, useParams } from 'next/navigation'
 
-  if (!event) return <div>Не найдено</div>;
+type Event = {
+    id: number
+    title: string
+    description: string
+    date: string
+    location: string
+    address: string
+    ageLimit: number
+    image?: string
+}
 
-  return (
-    <div className="event-page">
-      <h1>{event.title}</h1>
-      <p className="event-datetime-age">
-        {formatEventDateWithWeekday(event.datetime)} | {event.ageLimit}+
-      </p>
+export default function EventPage() {
+    const params = useParams()
+    const { id } = params
+    const [event, setEvent] = useState<Event | null>(null)
+    const [loading, setLoading] = useState(true)
+    const router = useRouter()
 
-    <div className="event-main-container">
-  <div className="event-content">
-    <img src={event.poster_url} alt={event.title} className="event-poster" />
-    <div className="event-description">
-      <p style={{ whiteSpace: "pre-wrap", textAlign: "left" }}>
-        {event.description.replace(/  /g, "\n")}
-      </p>
-      <button className="buy-ticket-button">
-        Купить билет от {event.minPrice} руб.
-      </button>
-    </div>
-  </div>
+    useEffect(() => {
+        if (!id) return
+        fetch(`http://localhost:3000/api/events/${id}`)
+            .then(res => res.json())
+            .then(data => setEvent(data))
+            .catch(err => console.error('Ошибка fetch:', err))
+            .finally(() => setLoading(false))
+    }, [id])
 
-  <div className="event-location">
-    <p className="location-name">{event.location}</p>
-    <p className="location-address">{event.address}</p>
-  </div>
+    if (loading) return <p className="text-center py-6">Загрузка...</p>
+    if (!event) return <p className="text-center py-6">Мероприятие не найдено</p>
 
-  <div className="map-widget">
-  <iframe
-    src={`https://yandex.ru/map-widget/v1/?rtext=${encodeURIComponent(
-      "город Нижний Новгород, " + event.address
-    )}`}
-    width="100%"
-    height="400"
-    frameBorder="0"
-  ></iframe>
-</div>
-</div>
-</div>
-  );
+    const placeholder = '/placeholder.jpg'
+
+    return (
+        <div className="max-w-4xl mx-auto p-6 flex flex-col gap-8">
+
+            {/* Кнопка Назад */}
+            <button
+                className="buy-ticket-button"
+                onClick={() => router.back()}
+            >
+                ← Назад
+            </button>
+
+            {/* Заголовок и дата */}
+            <div className="flex flex-col gap-2">
+                <h1 className="text-3xl font-bold">{event.title}</h1>
+                <p className="text-gray-700 text-sm">
+                    {new Date(event.date).toLocaleDateString()} |{" "}
+                    {new Date(event.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} |{" "}
+                    {event.ageLimit}+
+                </p>
+            </div>
+
+            {/* Изображение */}
+            <div className="w-full h-80 overflow-hidden rounded-lg">
+                <img
+                    src={event.image || placeholder}
+                    alt={event.title}
+                    className="w-full h-full object-cover"
+                />
+            </div>
+
+            {/* Описание */}
+            <div className="flex flex-col gap-4">
+                <h2 className="text-xl font-semibold">Описание мероприятия</h2>
+                <p className="text-gray-800 whitespace-pre-wrap">{event.description}</p>
+            </div>
+
+            {/* Место проведения */}
+            <div className="flex flex-col gap-2">
+                <h2 className="text-xl font-semibold">Место проведения</h2>
+                <p className="font-medium text-gray-800">{event.location}</p>
+                <p className="text-gray-700">{event.address}</p>
+            </div>
+
+            <button
+                className="buy-ticket-button"
+                onClick={() => alert('Здесь будет покупка билета')}
+            >
+                Купить билет
+            </button>
+            {/* Карта */}
+            <div className="w-full h-96 rounded-lg overflow-hidden">
+                <iframe
+                    src={`https://yandex.ru/map-widget/v1/?rtext=${encodeURIComponent('город Нижний Новгород, ' + event.address)}`}
+                    width="100%"
+                    height="100%"
+                    frameBorder="0"
+                ></iframe>
+            </div>
+        </div>
+    )
 }

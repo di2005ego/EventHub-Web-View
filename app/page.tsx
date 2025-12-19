@@ -1,28 +1,12 @@
-import { formatEventDate } from "../lib/formatDate";
-import Link from "next/link";
-import { getEvents } from "../lib/events";
+// app/page.tsx или pages/index.tsx
+import './globals.css'
+import EventsList from '../EventsList'
 
-export default async function Home() {
-  const events = await getEvents();
-
+export default function HomePage() {
   return (
-    <div className="grid">
-      {events.map((e: any) => (
-        <Link key={e.id} href={`/events/${e.id}`} className="card">
-          <div className="card-image">
-            <img
-            src={e.poster_url || "https://via.placeholder.com/400x400"}
-            alt={e.title}
-            />
-          </div>
-          <div className="card-body">
-            <strong>{e.title}</strong>
-            <div>{e.type}</div>
-            <div>{formatEventDate(e.datetime)}</div>
-            <div>{e.location}</div>
-          </div>
-        </Link>
-      ))}
-    </div>
-  );
+      <main className="min-h-screen bg-gray-100">
+        <h1 className="text-3xl font-bold text-center py-6">Афиша мероприятий</h1>
+        <EventsList />
+      </main>
+  )
 }
