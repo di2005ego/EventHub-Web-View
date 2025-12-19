@@ -10,7 +10,7 @@ export type Event = {
     location: string
     address?: string
     ageLimit?: number
-    image?: string
+    poster_url?: string
 }
 
 interface EventCardProps {
@@ -27,7 +27,7 @@ export default function EventCard({ event }: EventCardProps) {
         >
             {/* Изображение */}
             <div className="card-image">
-                <img src={event.image || placeholderImage} alt={event.title} />
+                <img src={event.poster_url} alt={event.title} />
             </div>
 
 

@@ -11,7 +11,7 @@ type Event = {
     location: string
     address: string
     ageLimit: number
-    image?: string
+    poster_url?: string
 }
 
 export default function EventPage() {
@@ -57,13 +57,14 @@ export default function EventPage() {
             </div>
 
             {/* Изображение */}
-            <div className="w-full h-80 overflow-hidden rounded-lg">
+            <div className="overflow-hidden rounded-lg" style={{ width: 300, height: 200 }}>
                 <img
-                    src={event.image || placeholder}
+                    src={event.poster_url || placeholder}
                     alt={event.title}
-                    className="w-full h-full object-cover"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
             </div>
+
 
             {/* Описание */}
             <div className="flex flex-col gap-4">
