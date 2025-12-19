@@ -6,7 +6,7 @@ export type Event = {
     id: number
     title: string
     description: string
-    date: string
+    datetime: string
     location: string
     address?: string
     ageLimit?: number
@@ -17,7 +17,7 @@ interface EventCardProps {
     event: Event
 }
 
-export default function EventCard({ event }: EventCardProps) {
+export default function EventCard({event}: EventCardProps) {
     const placeholderImage = '/placeholder.jpg'
 
     return (
@@ -27,21 +27,31 @@ export default function EventCard({ event }: EventCardProps) {
         >
             {/* Изображение */}
             <div className="card-image">
-                <img src={event.poster_url} alt={event.title} />
+                <img
+                    src={event.poster_url || "https://via.placeholder.com/400x400"}
+                    alt={event.title}
+                />
             </div>
-
 
             {/* Контент карточки */}
-            <div className="card-body">
-                <strong>{event.title}</strong>
-                <p>{event.description}</p>
-                <span className="event-datetime-age">
-                    {new Date(event.date).toLocaleDateString()}{" "}
-                    {new Date(event.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} |{" "}
-                    {event.ageLimit ?? '0'}+
-                </span>
-                <span className="event-location">{event.location}</span>
+            <div className="card-body flex flex-col gap-2">
+                <strong className="text-lg">{event.title}</strong>
+
+                {event.description && <div className="text-sm text-gray-600">{event.description}</div>}
+
+                {/* Дата и время */}
+                <div className="text-sm text-gray-700">
+                    {event.datetime
+                        ? new Date(event.datetime).toLocaleDateString() + " | " +
+                        new Date(event.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                        : "Дата не указана"} | {event.ageLimit ?? "0"}+
+                </div>
+
+                {/* Локация */}
+                <div className="text-sm text-gray-600">{event.location}</div>
             </div>
         </Link>
+
     )
+
 }

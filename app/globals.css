@@ -1,13 +1,5 @@
-/* ====================== */
-/* Базовые стили страницы */
-/* ====================== */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f4f6; /* светлый фон страницы */
-}
 
-/* Заголовок */
+body { margin:0; font-family: Arial, sans-serif; }
 .header {
   background: black;
   padding: 16px 0;
@@ -27,238 +19,174 @@ body {
   cursor: pointer;
 }
 
-/* Контейнер для контента */
-.container {
-  padding: 32px;
-}
+.container { padding:32px; }
 
-/* ====================== */
-/* Сетка карточек */
-/* ====================== */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 250px);
   gap: 24px;
   justify-content: center;
-  padding: 32px;
 }
 
-/* ====================== */
-/* Карточка события */
-/* ====================== */
 .card {
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
+  background: #eee;
   text-decoration: none;
   color: black;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* плавный переход */
 }
 
 .card:hover {
-  transform: translateY(-5px) scale(1.03);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+  transform: scale(1.05) translateY(-5px); /* увеличиваем и чуть поднимаем */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* лёгкая тень */
 }
 
-/* Изображение карточки */
 .card-image {
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
-  position: relative;
+  width:100%;
+  height:250px;
+  overflow:hidden;
 }
 
 .card-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top;
-  display: block;
-  transition: transform 0.5s ease;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:top;
+  display:block;
 }
 
-.card:hover .card-image img {
-  transform: scale(1.05);
-}
-
-/* Градиент для текста на изображении */
-.card-image::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 60%;
-  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
-}
-
-/* Тело карточки */
 .card-body {
-  padding: 16px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  flex: 1;
+  height: 100px; /* фиксированная или минимальная высота карточки */
 }
 
-/* Заголовок события */
 .card-body strong {
-  font-size: 1.2rem;
-  margin-bottom: 4px;
+  margin-bottom: auto; /* отталкивает остальные элементы вниз */
 }
 
-/* Описание события */
-.card-body p {
-  font-size: 0.95rem;
-  color: #555;
-  line-height: 1.4;
-  flex: 1;
-}
-
-/* Дата, возраст и локация */
-.event-datetime-age,
-.event-location {
-  font-size: 0.85rem;
-  color: #777;
-  margin-top: 4px;
-}
-
-/* Плавный переход для внутренних элементов карточки */
-.card-body * {
-  transition: color 0.3s ease;
-}
-
-/* ====================== */
-/* Кнопка "Купить билет" */
-/* ====================== */
-.buy-ticket-button {
-  background-color: orange;
-  color: black;
-  font-family: Georgia, serif;
-  font-size: 14px;
-  font-weight: bold;
-  padding: 8px 16px;
-  border: 2px solid black;
-  cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
-  align-self: flex-start;
-  border-radius: 6px;
-}
-
-.buy-ticket-button:hover {
-  background-color: darkorange;
-  transform: scale(1.05);
-}
-
-/* ====================== */
-/* Страница событий */
-/* ====================== */
 .event-layout {
-  display: flex;
-  gap: 24px;
-  margin-top: 24px;
-  flex-wrap: wrap;
+  display:flex;
+  gap:24px;
+  margin-top:24px;
 }
 
 .event-layout img {
-  max-width: 400px;
-  width: 100%;
-  border-radius: 8px;
+  width:400px;
+}
+
+button {
+  margin-top:16px;
+  padding:12px 20px;
 }
 
 .event-page {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 16px;
+  align-items: center;   /* по горизонтали центр */
+  text-align: center;    /* чтобы текст тоже центрировался */
+  gap: 16px;             /* отступы между блоками */
   padding: 24px;
 }
 
 .event-content {
   display: flex;
-  flex-direction: row;
+  flex-direction: row;   /* постер + описание в ряд */
   align-items: flex-start;
-  justify-content: center;
+  justify-content: center; /* центр по горизонтали */
   gap: 24px;
-  flex-wrap: wrap;
+  flex-wrap: wrap;       /* на узких экранах описание под постером */
+}
+
+.event-content img {
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
 }
 
 .event-description {
-  max-width: 400px;
+  max-width: 400px;          /* ширина описания */
   display: flex;
   flex-direction: column;
   gap: 12px;
-  text-align: left;
+  text-align: left;           /* текст по левому краю */
 }
 
 .event-description button {
-  align-self: center;
+  align-self: center; /* кнопка по центру описания */
   padding: 8px 16px;
+  cursor: pointer;
 }
 
-/* Дата и возраст */
+.buy-ticket-button {
+  background-color: orange;        /* оранжевая кнопка */
+  color: black;                    /* текст черный */
+  font-family: Georgia, serif;     /* шрифт */
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px 28px;              /* увеличили внутренние отступы */
+  border: 2px solid black;         /* черный ободок */
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.buy-ticket-button:hover {
+  background-color: darkorange;    /* чуть темнее при наведении */
+  transform: scale(1.05);          /* лёгкое увеличение при hover */
+}
+
 .event-datetime-age {
   margin-top: 0;
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 20px;        /* увеличенный размер */
+  font-weight: bold;       /* жирный шрифт */
 }
 
-/* Место проведения */
+h1 {
+  margin-bottom: 8px; /* уменьшили отступ снизу */
+  font-size: 32px;    /* можно подстроить размер заголовка */
+}
+
+/* Блок с местом проведения выравниваем по левому краю постера */
 .event-location {
   margin-top: 32px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: calc(400px + 24px + 400px);
+  width: calc(400px + 24px + 400px); /* ширина = постер + gap + описание */
 }
 
 .location-name {
   font-weight: bold;
   font-size: 18px;
-  margin: 0;
+  margin: 0; /* убираем отступы сверху и снизу */
 }
 
 .location-address {
   font-size: 16px;
-  margin: 1;
+  margin: 1; /* убираем отступы сверху и снизу */
 }
 
-/* Карта */
 .map-widget iframe {
-  width: 100%;
+  width: 100%; /* растягивается на всю ширину родителя */
   border: none;
   border-radius: 12px;
 }
 
-/* ====================== */
-/* Заголовки и кнопки */
-/* ====================== */
-h1 {
-  margin-bottom: 8px;
-  font-size: 32px;
-}
-
-/* ====================== */
-/* Футер */
-/* ====================== */
 .footer {
   background: black;
   padding: 32px 0;
-  margin-top: 32px;
+  margin-top: 32px; /* отступ от контента */
 }
 
 .footer-inner {
   width: 100%;
-  max-width: calc(250px * 3 + 24px * 2);
+  max-width: calc(250px * 3 + 24px * 2); /* такая же ширина, как у .header-inner */
   margin: 0 auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* текст слева, иконка справа */
   align-items: center;
   color: white;
   font-size: 16px;
@@ -270,67 +198,13 @@ h1 {
   height: 24px;
   cursor: pointer;
 }
-.btn {
-  appearance: none;
-  border: none;
-  border-radius: 10px;
-
-  padding: 14px 28px;
-
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1;
-
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.15s ease, opacity 0.15s ease;
+html,
+body {
+  height: 100%;
 }
 
-/* Нажатие */
-.btn:active {
-  transform: scale(0.97);
-}
-
-/* Отключённая */
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* ===================== */
-/* ОСНОВНАЯ КНОПКА */
-/* ===================== */
-.btn-primary {
-  background: #111;
-  color: #fff;
-}
-
-.btn-primary:hover {
-  background: #222;
-}
-
-/* ===================== */
-/* ВТОРОСТЕПЕННАЯ */
-/* ===================== */
-.btn-secondary {
-  background: transparent;
-  color: #111;
-  border: 1.5px solid #111;
-}
-
-.btn-secondary:hover {
-  background: #f2f2f2;
-}
-
-/* ===================== */
-/* КНОПКА-ССЫЛКА */
-/* ===================== */
-.btn-link {
-  background: none;
-  color: #2563eb;
-  padding: 0;
-  font-weight: 500;
-}
-
-.btn-link:hover {
-  text-decoration: underline;
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }

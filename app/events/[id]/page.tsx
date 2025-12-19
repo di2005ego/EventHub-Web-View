@@ -2,14 +2,16 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import {formatEventDateWithWeekday} from "../../../lib/formatDateWithWeekday";
 
 type Event = {
     id: number
     title: string
     description: string
-    date: string
+    datetime: string
     location: string
     address: string
+    minPrice: number
     ageLimit: number
     poster_url?: string
 }
@@ -36,64 +38,61 @@ export default function EventPage() {
     const placeholder = '/placeholder.jpg'
 
     return (
-        <div className="max-w-4xl mx-auto p-6 flex flex-col gap-8">
+        <div className="event-page min-h-screen flex flex-col items-center px-6 py-10 gap-12">
 
-            {/* Кнопка Назад */}
-            <button
-                className="buy-ticket-button"
-                onClick={() => router.back()}
-            >
-                ← Назад
-            </button>
-
-            {/* Заголовок и дата */}
-            <div className="flex flex-col gap-2">
-                <h1 className="text-3xl font-bold">{event.title}</h1>
-                <p className="text-gray-700 text-sm">
-                    {new Date(event.date).toLocaleDateString()} |{" "}
-                    {new Date(event.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} |{" "}
-                    {event.ageLimit}+
+            {/* Заголовок */}
+            <div className="text-center max-w-3xl flex flex-col gap-3">
+                <h1>{event.title}</h1>
+                <p className="event-datetime-age">
+                    {formatEventDateWithWeekday(event.datetime)} | {event.ageLimit}+
                 </p>
             </div>
 
-            {/* Изображение */}
-            <div className="overflow-hidden rounded-lg" style={{ width: 300, height: 200 }}>
-                <img
-                    src={event.poster_url || placeholder}
-                    alt={event.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-            </div>
+            {/* Основной контент: постер + описание */}
+            <div className="event-main-container flex flex-col gap-8 w-full max-w-4xl">
 
+                <div className="event-content flex flex-col md:flex-row items-center gap-6">
+                    {/* Постер */}
+                    <img
+                        src={event.poster_url}
+                        alt={event.title}
+                        className="event-poster rounded-xl shadow-md"
+                        style={{ width: 360, height: 240, objectFit: "cover" }}
+                    />
 
-            {/* Описание */}
-            <div className="flex flex-col gap-4">
-                <h2 className="text-xl font-semibold">Описание мероприятия</h2>
-                <p className="text-gray-800 whitespace-pre-wrap">{event.description}</p>
-            </div>
+                    {/* Описание + кнопка */}
+                    <div className="event-description flex flex-col gap-4">
+                        <p style={{ whiteSpace: "pre-wrap", textAlign: "left" }}>
+                            {event.description.replace(/  /g, "\n")}
+                        </p>
+                        <button className="buy-ticket-button self-start">
+                            Купить билет от {event.minPrice} руб.
+                        </button>
+                    </div>
+                </div>
 
-            {/* Место проведения */}
-            <div className="flex flex-col gap-2">
-                <h2 className="text-xl font-semibold">Место проведения</h2>
-                <p className="font-medium text-gray-800">{event.location}</p>
-                <p className="text-gray-700">{event.address}</p>
-            </div>
+                {/* Место проведения */}
+                <div className="event-location flex flex-col gap-2 text-left">
+                    <p className="location-name">{event.location}</p>
+                    <p className="location-address">{event.address}</p>
+                </div>
 
-            <button
-                className="buy-ticket-button"
-                onClick={() => alert('Здесь будет покупка билета')}
-            >
-                Купить билет
-            </button>
-            {/* Карта */}
-            <div className="w-full h-96 rounded-lg overflow-hidden">
-                <iframe
-                    src={`https://yandex.ru/map-widget/v1/?rtext=${encodeURIComponent('город Нижний Новгород, ' + event.address)}`}
-                    width="100%"
-                    height="100%"
-                    frameBorder="0"
-                ></iframe>
+                {/* Карта */}
+                <div className="map-widget w-full h-96 rounded-xl overflow-hidden shadow-md">
+                    <iframe
+                        src={`https://yandex.ru/map-widget/v1/?rtext=${encodeURIComponent(
+                            "город Нижний Новгород, " + event.address
+                        )}`}
+                        width="100%"
+                        height="100%"
+                        frameBorder="0"
+                    />
+                </div>
+
             </div>
         </div>
-    )
+    );
+
+
+
 }
